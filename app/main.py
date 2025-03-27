@@ -5,10 +5,15 @@ from typing import Optional
 from app.utils.openai_client import get_openai_response
 from app.utils.file_handler import save_upload_file_temporarily
 
+
 # Import the functions you want to test directly
 from app.utils.functions import *
 
 app = FastAPI(title="IITM Assignment API")
+
+@app.get("/api")
+async def root():
+    return {"message": "Hello, World!"}
 
 # Add CORS middleware
 app.add_middleware(
