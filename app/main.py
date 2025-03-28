@@ -1,21 +1,16 @@
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import os
+import json
 from typing import Optional
 from app.utils.openai_client import get_openai_response
 from app.utils.file_handler import save_upload_file_temporarily
 
-
-# Import the functions you want to test directly
 from app.utils.functions import *
 
 app = FastAPI(title="IITM Assignment API")
 
-@app.get("/api")
-async def root():
-    return {"message": "Hello, World!"}
-
-# Add CORS middleware
+# Configure CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -24,9 +19,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to FastAPI on Vercel"}
+
+@app.get("/api")
+def read_api():
+    return {"message": "API endpoint is working"}
+
 
 @app.post("/api/")
-async def process_question(
+async def create_upload_file(
     question: str = Form(...), file: Optional[UploadFile] = File(None)
 ):
     try:
